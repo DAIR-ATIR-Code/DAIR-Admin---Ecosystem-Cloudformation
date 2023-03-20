@@ -87,7 +87,7 @@
                 "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS STARTING <=======\"",
                 "echo $(date)",
 
-                "#Setting up tools and Running application",
+                "#Install docker, set up dependencies, and run application",
                 "curl -L -k \"https://code.cloud.canarie.ca:3000/shassan/Ecosystem/raw/$RELEASENAME/Workflow/ResourcePool.sh\" | bash",
 
                 "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS COMPLETE <=======\"",
