@@ -20,7 +20,6 @@ cd /home/$(ls /home/* -d | head -n 1 | cut -d/ -f3)/BPCode
 git clone https://github.com/LeslieMills/GILBP.git
 cd GILBP
 
-
 #Run the application
 docker pull devashishupadhyay/scikit-learn-docker
 docker-compose up --build --detach
