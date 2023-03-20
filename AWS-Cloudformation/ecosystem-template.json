@@ -1,1 +1,114 @@
-TEST
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Application Server for running the ESI-geospatial and AI information toolbox by Ecosystem Informatics (ESI)",
+
+  "Parameters" : {
+    "InstanceName" : {
+      "Description" : "Instance Name of the BoosterPack Application Server",
+      "Type" : "String",
+      "MinLength": "1",
+      "MaxLength": "32",
+      "ConstraintDescription" : "Please provide a unique name within 1 to 32 characters long"
+    },
+    "ApplicationImage" : {
+      "Description" : "Recommended AMI for the BoosterPack Application Server",
+      "Type" : "String",
+      "Default" : "ubuntu-20.04",
+      "AllowedValues" : [ "ubuntu-20.04"],
+      "ConstraintDescription" : "Preset configuration cannot be changed"
+    },
+    "InstanceType" : {
+      "Description" : "Recommended EC2 Instance Type for the BoosterPack Application Server",
+      "Type" : "String",
+      "Default" : "t2.medium",
+      "AllowedValues" : [ "t2.medium"],
+      "ConstraintDescription" : "Preset configuration cannot be changed"
+    },
+    "KeyPair": {
+      "Description" : "Select an existing KeyPair for SSH access to the BoosterPack Application Server",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "Must use an existing key pair"
+    },
+    "SecurityGroup": {
+        "Description" : "Select a Security Group in the default VPC",
+        "Type": "AWS::EC2::SecurityGroup::GroupName",
+        "ConstraintDescription" : " Must use an existing Security Group in the default VPC"
+      } 
+  },
+
+  "Mappings": {
+    "OSType2AMI": {
+        "ubuntu-20.04": {
+            "AMIId": "ami-0859074604ca21d57"
+        }
+    }
+  },       
+  "Resources" : {
+    "AppServer": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "Tags" : [
+            {"Key" : "Name", "Value" : { "Ref" : "InstanceName" }},
+            {"Key" : "BoosterPack", "Value" : "Ecosystem"}
+        ],    
+        "ImageId" : { 
+          "Fn::FindInMap" : [ 
+            "OSType2AMI", 
+            { 
+              "Ref" : "ApplicationImage" 
+            }, 
+            "AMIId"
+          ]
+        },
+        "InstanceType"   : { "Ref" : "InstanceType" },
+        "KeyName"        : { "Ref" : "KeyPair" },
+        "SecurityGroups" : [{"Ref" : "SecurityGroup"}],
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "VolumeType": "gp2",
+              "VolumeSize": "40"
+            }
+          }
+        ],
+        "UserData":{
+          "Fn::Base64":{
+            "Fn::Join":[
+              "\n",
+              [ 
+                "#!/bin/bash",
+
+                "{",
+
+                "RELEASENAME=\"main\"",
+                
+                "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS STARTING <=======\"",
+                "echo $(date)",
+
+                "#Setting up tools and Running application",
+                "curl -L -k \"https://code.cloud.canarie.ca:3000/shassan/Ecosystem/raw/$RELEASENAME/Workflow/ResourcePool.sh\" | bash",
+
+                "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS COMPLETE <=======\"",
+                "echo $(date)",
+                
+                "} >> /var/log/boosterpack.log 2>&1"   
+              ]
+            ]
+          }
+        }
+      }
+    }
+  }, 
+  "Outputs" : {
+    "InstanceID" : {
+        "Value" : { "Ref" : "AppServer" },
+        "Description" : "Application Server Instance ID"
+      },
+    "IPAddress" : {
+      "Value" : { "Fn::Join" : ["", [{ "Fn::GetAtt" : [ "AppServer", "PublicIp" ]},":80"]] },
+      "Description" : "Application Server IP Address"
+    }
+  }
+}
