@@ -19,7 +19,7 @@ mkdir /home/$(ls /home/* -d | head -n 1 | cut -d/ -f3)/BPCode
 cd /home/$(ls /home/* -d | head -n 1 | cut -d/ -f3)/BPCode
 
 #clone repository
-echo "Cloning repository
+echo "Cloning repository"
 git clone https://github.com/LeslieMills/GILBP.git
 cd GILBP
 
