@@ -107,7 +107,7 @@
         "Description" : "Application Server Instance ID"
       },
     "IPAddress" : {
-      "Value" : { "Fn::Join" : ["", [{ "Fn::GetAtt" : [ "AppServer", "PublicIp" ]},":80"]] },
+      "Value" : { "Fn::GetAtt" : [ "AppServer", "PublicIp" ]},
       "Description" : "Application Server IP Address"
     }
   }
