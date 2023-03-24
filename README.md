@@ -1,3 +1,3 @@
 # Ecosystem
 
-DAIR Repo for Ecosystems Informatics BoosterPack
+AWS Cloudformation Repo for Ecosystems Informatics BoosterPack
