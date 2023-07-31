@@ -82,17 +82,22 @@
 
                 "{",
 
+                "echo \"echo '********** DAIR BoosterPack is currently being installed... Please wait !!! **********' \" >> \"/etc/profile.d/boosterpack.sh\"",
+
                 "RELEASENAME=\"main\"",
                 
-                "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS STARTING <=======\"",
+                "echo \"=======> ECOSYSTEM INFORMATICS BOOSTERPACK INSTALLATION IS STARTING <=======\"",
                 "echo $(date)",
 
                 "#Install docker, set up dependencies, and run application",
-                "curl -L -k \"https://code.cloud.canarie.ca:3000/shassan/Ecosystem/raw/$RELEASENAME/Workflow/ResourcePool.sh\" | bash",
+                "curl -L -k \"https://code.cloud.canarie.ca:3000/shassan/Ecosystem/raw/$RELEASENAME/Workflow/launchcode.sh\" | bash",
 
-                "echo \"=======> DAIR BOOSTERPACK INSTALLATION IS COMPLETE <=======\"",
+                "echo \"=======> ECOSYSTEM INFORMATICS BOOSTERPACK INSTALLATION IS COMPLETE <=======\"",
                 "echo $(date)",
-                
+
+                "sed -i '1d' \"/etc/profile.d/boosterpack.sh\"",
+                "echo \"echo '********** DAIR BoosterPack is installed !!! **********' \" >> \"/etc/profile.d/boosterpack.sh\"",
+
                 "} >> /var/log/boosterpack.log 2>&1"   
               ]
             ]
@@ -102,10 +107,6 @@
     }
   }, 
   "Outputs" : {
-    "InstanceID" : {
-        "Value" : { "Ref" : "AppServer" },
-        "Description" : "Application Server Instance ID"
-      },
     "IPAddress" : {
       "Value" : { "Fn::GetAtt" : [ "AppServer", "PublicIp" ]},
       "Description" : "Application Server IP Address"
