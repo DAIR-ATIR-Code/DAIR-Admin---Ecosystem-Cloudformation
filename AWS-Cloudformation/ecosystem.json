@@ -90,7 +90,7 @@
                 "echo $(date)",
 
                 "#Install docker, set up dependencies, and run application",
-                "curl -L -k \"https://code.cloud.canarie.ca:3000/shassan/Ecosystem/raw/$RELEASENAME/Workflow/launchcode.sh\" | bash",
+                "curl -L -k \"https://raw.githubusercontent.com/DAIR-ATIR-Code/DAIR-Admin---Ecosystem-Cloudformation/main/Workflow/launchcode.sh\" | bash",
 
                 "echo \"=======> ECOSYSTEM INFORMATICS BOOSTERPACK INSTALLATION IS COMPLETE <=======\"",
                 "echo $(date)",
